@@ -26,7 +26,7 @@ hw2/
 
 1. `FCNTX`、`AGTHX` 與 `SPY` 的績效與風險特性有何差異？
 2. 若把 `FCNTX` 與 `AGTHX` 組成等權重主動基金投資組合 `ACTIVE_EW`，其表現是否優於 `SPY`？
-3. 這些資產 / 投組的超額報酬能否被 CAPM、Carhart 4-factor 與 Fama-French 5-factor 模型解釋？
+3. 這些資產 / 投組的超額報酬能否被 CAPM、Carhart 4-factor、Fama-French 5-factor 與延伸的 `FF5 + LT_Rev` 模型解釋？
 
 ## Data Sources
 
@@ -34,6 +34,7 @@ hw2/
 - Factor data: Kenneth French Data Library
   - Fama-French 5 Factors (monthly)
   - Momentum factor (monthly)
+  - Long-term reversal factor (monthly)
 
 ## How To Run
 
@@ -76,6 +77,7 @@ python3 hw2_asset_pricing_analysis.py
 - 改用本地專案路徑，不再寫死 `/content/...`
 - 補上投資組合建構，而不只分析單一資產
 - 加入 CAPM，讓模型難度有遞進
+- 額外加入 `LT_Rev`，檢查成長型主動基金是否帶有長期贏家 / 反轉風格曝險
 - 以「月份」對齊資料，避免月底交易日不同造成錯誤合併
 - 用 Markdown 報告整理結果，交作業時更容易直接修改與引用
 

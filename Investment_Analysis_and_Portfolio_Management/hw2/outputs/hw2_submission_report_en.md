@@ -1,31 +1,43 @@
-# HW2 Regression Report: Alpha, Betas, and Market Interpretation
+# HW2 Regression Report: Alpha, Betas, and Factor Selection Rationale
 
 ## Objective
-This report evaluates whether two actively managed U.S. equity mutual funds, `FCNTX` and `AGTHX`, delivered abnormal performance relative to a passive market benchmark, `SPY`, from January 2021 to December 2025. I also construct an equal-weight active portfolio, `ACTIVE_EW`, to test whether combining two active managers improves the overall risk-return tradeoff. The goal is to estimate alpha and beta coefficients and interpret what they imply about market exposure, style tilts, and active management.
+This report evaluates whether two actively managed U.S. equity mutual funds, `FCNTX` and `AGTHX`, delivered abnormal performance relative to a passive market benchmark, `SPY`, over January 2021 to December 2025. I also construct an equal-weight active portfolio, `ACTIVE_EW`, to test whether combining two active managers improves the overall risk-return tradeoff. The objective is not only to estimate `alpha` and `betas`, but also to explain why these factors were chosen and what the coefficients reveal about the underlying investment style of the funds.
 
-## Why These Funds Were Chosen
-I intentionally chose one passive ETF and two active mutual funds because this setup creates a clean benchmark-versus-manager comparison.
+## Why These Assets Were Chosen
+I chose one passive ETF and two active mutual funds because this creates a clear benchmark-versus-manager comparison.
 
-- `SPY` is a broad U.S. equity ETF tracking the S&P 500, so it serves as a natural market benchmark and a low-cost passive alternative.
-- `FCNTX` is an actively managed growth-oriented fund with a reputation for concentrated stock selection among large U.S. companies.
-- `AGTHX` is another actively managed growth fund, but with a somewhat different portfolio construction process and manager style.
+- `SPY` tracks the S&P 500 and serves as the natural passive benchmark for broad U.S. equity exposure.
+- `FCNTX` is a large-cap growth-oriented active fund with concentrated stock selection.
+- `AGTHX` is also an active growth fund, but with a different manager process and portfolio construction.
 
-Using `FCNTX` and `AGTHX` together is useful because they represent active management decisions rather than mechanical index replication. Comparing them with `SPY` helps answer a standard finance question: are returns driven by manager skill, or mostly by systematic market and style risk? The equal-weight portfolio `ACTIVE_EW` reduces single-manager noise and tests whether a diversified active-fund mix can outperform passive indexing after controlling for common factors.
+This combination makes the assignment meaningful because it allows a direct test of whether active outperformance reflects manager skill or simply exposure to standard equity risk factors.
+
+## Why These Factors Were Chosen
+The factor choice is based on the style of the selected funds, not on trial-and-error searching for a positive alpha.
+
+- `Mkt-RF` is essential because all three assets are U.S. equity vehicles and should have strong market exposure.
+- `SMB` is relevant because the funds may tilt toward large-cap or small-cap stocks.
+- `HML` is especially important because `FCNTX` and `AGTHX` are growth-oriented funds, so a growth-versus-value tilt is a central style question.
+- `RMW` and `CMA` are useful because active managers often favor firms with particular profitability and investment characteristics.
+- `MOM` is included because growth funds can overlap with winner-chasing or trend-following behavior.
+
+I also add one non-core factor, `LT_Rev` (long-term reversal), as a style-based extension. I chose `LT_Rev` because growth managers often hold firms with strong multi-year prior performance, so an apparent “alpha” may actually reflect exposure to long-horizon winner/loser cycles not fully captured by the standard models. This is a cleaner extension than `ST_Rev`, which is more suited to short-horizon trading strategies, and more appropriate than industry portfolios or accounting-sorted anomalies for this assignment, which is mainly about parsimonious factor attribution. I also did not use `BAB` as the main extension because these funds are not low-beta products, and I did not use `QMJ` as the main extension because part of the quality story already overlaps with `RMW` and `CMA` in the Fama-French framework.
 
 ## Data and Regression Setup
-Price data were obtained from Alpha Vantage using monthly adjusted prices for `SPY`, `FCNTX`, and `AGTHX`. Factor data were taken from the Kenneth French Data Library, including the Fama-French five factors (`Mkt-RF`, `SMB`, `HML`, `RMW`, `CMA`) and the momentum factor (`MOM`). Monthly simple returns were computed from adjusted prices and matched by month to the factor data. The dependent variable in every regression is monthly excess return:
+Monthly adjusted price data for `SPY`, `FCNTX`, and `AGTHX` were obtained from Alpha Vantage. Factor data were obtained from the Kenneth French Data Library, including the Fama-French five factors, momentum, and the long-term reversal factor. Monthly simple returns were computed from adjusted prices, and the dependent variable in all regressions is monthly excess return:
 
 `R_i - R_f`
 
-where `R_i` is the asset return and `R_f` is the risk-free rate. After return construction, the regression sample contains 59 monthly observations.
+where `R_i` is the asset return and `R_f` is the risk-free rate. The final regression sample contains 59 monthly observations.
 
-I ran three OLS regression specifications:
+I estimated four models:
 
-1. `CAPM`: `R_i - R_f = alpha_i + beta_mkt (Mkt-RF) + e_i`
-2. `Carhart 4-factor`: adds `SMB`, `HML`, and `MOM`
-3. `Fama-French 5-factor`: adds `SMB`, `HML`, `RMW`, and `CMA`
+1. `CAPM`
+2. `Carhart 4-factor`
+3. `Fama-French 5-factor`
+4. `FF5 + LT_Rev`
 
-The CAPM shows basic market exposure, while the multi-factor models test whether apparent outperformance is actually explained by growth, size, profitability, investment, or momentum tilts. My main interpretation emphasizes the FF5 model because it is the richest non-momentum specification, while the Carhart regression serves as a momentum check.
+The first three models are the standard sequence. The fourth model is the main extension used to test whether the active growth funds also load on long-horizon reversal behavior.
 
 ## Regression Results
 
@@ -37,28 +49,28 @@ The CAPM shows basic market exposure, while the multi-factor models test whether
 | AGTHX | -0.0016 | 0.3822 | 1.0990 | 0.9325 |
 | ACTIVE_EW | 0.0001 | 0.9370 | 1.0576 | 0.9263 |
 
-### Table 2. FF5 Results
-| Asset | Alpha | p-value | Mkt-RF | SMB | HML | RMW | CMA | R-squared |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| SPY | 0.0000 | 0.9181 | 0.9987 | -0.0866 | 0.0139 | 0.0912 | 0.0301 | 0.9969 |
-| FCNTX | 0.0015 | 0.3719 | 1.0150 | -0.2433 | -0.1554 | 0.0153 | -0.0667 | 0.9464 |
-| AGTHX | 0.0004 | 0.7289 | 1.0605 | -0.0465 | -0.1241 | -0.1968 | -0.0914 | 0.9721 |
-| ACTIVE_EW | 0.0010 | 0.4540 | 1.0378 | -0.1449 | -0.1397 | -0.0908 | -0.0790 | 0.9690 |
+### Table 2. FF5 + LT_Rev Results
+| Asset | Alpha | p-value | Mkt-RF | SMB | HML | RMW | CMA | LT_Rev | R-squared | Adj. R-squared |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| SPY | 0.0001 | 0.8685 | 0.9974 | -0.0865 | 0.0211 | 0.0855 | 0.0350 | -0.0136 | 0.9969 | 0.9966 |
+| FCNTX | 0.0016 | 0.3614 | 1.0121 | -0.2431 | -0.1393 | 0.0024 | -0.0558 | -0.0306 | 0.9465 | 0.9403 |
+| AGTHX | 0.0007 | 0.5953 | 1.0483 | -0.0460 | -0.0571 | -0.2500 | -0.0462 | -0.1270 | 0.9742 | 0.9712 |
+| ACTIVE_EW | 0.0011 | 0.3937 | 1.0302 | -0.1446 | -0.0982 | -0.1238 | -0.0510 | -0.0788 | 0.9699 | 0.9664 |
 
-Carhart results are broadly consistent with the FF5 estimates. In particular, the active funds and `ACTIVE_EW` all show momentum coefficients near zero and statistically insignificant, so momentum does not appear to be the main driver of their returns in this sample.
+Carhart results show that the momentum coefficients for `FCNTX`, `AGTHX`, and `ACTIVE_EW` are all near zero and statistically insignificant, so short-horizon momentum is not the main driver of these funds in this sample.
 
 ## Interpretation
-The first important result is that alpha is not statistically significant for any of the active strategies. Under CAPM, `FCNTX` has a positive monthly alpha of `0.18%`, `AGTHX` has a negative alpha of `-0.16%`, and `ACTIVE_EW` is essentially zero, but none of these estimates is statistically different from zero. After moving to the richer Carhart and FF5 regressions, the same conclusion remains: once common risk factors are controlled for, there is no strong evidence of persistent abnormal performance. In practical terms, the sample does not support a claim of reliable manager skill.
+The main result is that none of the active strategies generates statistically significant alpha. Under CAPM, `FCNTX` has a positive alpha and `AGTHX` has a negative alpha, but neither is significant. After controlling for broader style factors in Carhart, FF5, and `FF5 + LT_Rev`, the same conclusion remains. This means the data do not support the claim that these managers produced persistent abnormal return after adjusting for common risk exposures.
 
-The second result is that all assets have market beta close to one, with the active funds slightly above one. `SPY` has a market beta of about `1.00`, exactly what we would expect from a broad market ETF. `FCNTX` is also near one, while `AGTHX` and `ACTIVE_EW` are somewhat more aggressive, with market betas around `1.04` to `1.10` depending on the model. This means the active funds participated strongly in market rallies but also carried somewhat more downside risk. That pattern is consistent with the performance summary: `FCNTX` produced the highest annualized return, but `SPY` had the best Sharpe ratio and the smallest maximum drawdown.
+The market betas are all close to one, with `AGTHX` and `ACTIVE_EW` slightly above one. This shows that the funds are basically full-equity market vehicles, not niche or defensive strategies. That helps explain why `SPY`, `FCNTX`, and `AGTHX` all moved strongly with the broad U.S. market during the sample period.
 
-The third result is the consistent negative `HML` loading for the active funds and the active portfolio. In both Carhart and FF5 regressions, `FCNTX`, `AGTHX`, and `ACTIVE_EW` all have negative and mostly significant `HML` coefficients. This indicates a growth tilt rather than a value tilt. That finding fits the sample period, which included post-pandemic recovery, aggressive monetary tightening, and then a large-cap growth and AI-led rally. Their performance was therefore not style-neutral; it was strongly linked to growth exposure.
+The negative `SMB` and `HML` coefficients are especially informative. For `FCNTX`, `SMB = -0.2431` and `HML = -0.1393`, which indicates a large-cap growth tilt. `ACTIVE_EW` shows the same pattern. This is exactly what we would expect from active growth funds concentrated in well-known U.S. companies rather than small-cap or deep-value stocks. The factor choice was therefore justified ex ante and confirmed ex post by the regression output.
 
-The `SMB` coefficients provide a similar message. `FCNTX` and `ACTIVE_EW` have negative and significant `SMB` loadings in the FF5 model, which means they tilt toward larger-cap stocks rather than small-cap stocks. `AGTHX` has a slightly negative but insignificant `SMB` coefficient, implying a weaker size tilt. Combined with the negative `HML` coefficients, the active funds look more like large-cap growth vehicles than broad active stock pickers across the full market spectrum.
+`AGTHX` provides the most interesting extended result. In the baseline FF5 model, it already shows a negative `RMW` loading, meaning it does not behave like a high-profitability tilt. After adding `LT_Rev`, the long-term reversal beta is `-0.1270` with `p = 0.0489`, which is statistically significant. A negative loading means the fund behaves more like a portfolio of long-horizon winners than a reversal strategy that profits from long-run losers rebounding. This fits the intuition that a growth manager may hold firms with persistent multi-year leadership rather than names that have been weak for several years.
 
-The profitability and investment factors add one more layer of interpretation. `AGTHX` has a significantly negative `RMW` coefficient, suggesting weaker exposure to highly profitable firms. `ACTIVE_EW` also has a negative `RMW`, although the estimate is only marginally significant. `CMA` is negative for the active funds as well, but generally not significant. These results suggest that the active strategies were not rewarded primarily for holding conservative, high-profitability firms. The dominant story remains market exposure plus a large-cap growth orientation.
+The change in model fit also matters. For `AGTHX`, `R-squared` rises from `0.9721` in FF5 to `0.9742` in `FF5 + LT_Rev`, and the absolute `HML` loading becomes smaller. That suggests some of what initially looked like pure growth exposure may actually be tied to long-horizon winner behavior. In contrast, `FCNTX` and `ACTIVE_EW` also have negative `LT_Rev` betas, but those coefficients are not statistically significant, so the evidence is much weaker there.
 
-Taken together, the regression results show that market conditions, not alpha, explain most of the observed performance. The high `R-squared` values support that conclusion: `SPY` reaches `0.9969` in FF5, while the active funds and `ACTIVE_EW` are also very high, between `0.9464` and `0.9721`. When a factor model explains that much variation, realized returns are largely systematic rather than idiosyncratic. For this sample, the market rewarded investors mainly for bearing broad equity risk and growth-related style exposure. The active funds did not produce returns that were clearly outside that factor structure.
+This is exactly the concept the assignment is trying to teach. A fund can look attractive in raw returns, but once returns are decomposed into systematic factors, the interpretation changes. In this project, the active funds do not show strong alpha. Instead, they look like funds whose returns are largely explained by exposure to the equity market, large-cap growth characteristics, and in the case of `AGTHX`, some exposure to long-horizon winner behavior. The regression therefore converts “performance” into a more defensible story about style exposure.
 
 ## Conclusion
-This regression exercise suggests that `SPY`, `FCNTX`, `AGTHX`, and the equal-weight active portfolio were all heavily driven by common market forces during 2021-2025. The passive benchmark behaved as expected, with beta near one and alpha near zero. The active funds did not generate statistically significant alpha, so their performance should not be interpreted as clear evidence of manager skill. Instead, their returns were mostly explained by exposure to the market and to growth-oriented, mostly large-cap equity styles. The main lesson is that what looks like active outperformance in raw returns can disappear once returns are decomposed into systematic factor betas.
+The results imply that `SPY`, `FCNTX`, `AGTHX`, and `ACTIVE_EW` were all driven primarily by common market forces over 2021-2025. The passive benchmark behaves as expected, with beta near one and alpha near zero. The active funds also do not produce statistically significant alpha, so their performance should not be interpreted as clear evidence of manager skill. Their returns are better understood as a combination of market exposure, large-cap growth tilts, and, for `AGTHX`, a significant negative loading on the long-term reversal factor. This makes `LT_Rev` a useful extension because it adds a style-consistent explanation rather than simply increasing model complexity.

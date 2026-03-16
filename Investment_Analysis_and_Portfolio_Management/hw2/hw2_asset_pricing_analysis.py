@@ -5,10 +5,10 @@
 核心目標不是只把結果算出來，而是把每一步的資料處理邏輯寫清楚，方便學習：
 
 1. 從 Alpha Vantage 下載基金 / ETF 的月資料。
-2. 從 Kenneth French 資料庫下載 Fama-French 5 因子與 Momentum 因子。
+2. 從 Kenneth French 資料庫下載 Fama-French 5 因子、Momentum 因子與 LT reversal 因子。
 3. 整理月報酬、建立等權重主動基金投資組合。
 4. 計算績效指標與風險指標。
-5. 估計 CAPM、Carhart 4-factor、Fama-French 5-factor 模型。
+5. 估計 CAPM、Carhart 4-factor、Fama-French 5-factor，以及 FF5 + LT reversal 模型。
 6. 輸出圖表、CSV 與 Markdown 報告。
 """
 
@@ -70,6 +70,7 @@ KEN_FRENCH_BASE_URL = (
 )
 FF5_URL = f"{KEN_FRENCH_BASE_URL}/F-F_Research_Data_5_Factors_2x3_CSV.zip"
 MOM_URL = f"{KEN_FRENCH_BASE_URL}/F-F_Momentum_Factor_CSV.zip"
+LT_REV_URL = f"{KEN_FRENCH_BASE_URL}/F-F_LT_Reversal_Factor_CSV.zip"
 
 REQUEST_TIMEOUT = 60
 ALPHA_VANTAGE_SLEEP_SECONDS = 12
@@ -80,6 +81,7 @@ MODEL_SPECS: dict[str, list[str]] = {
     "CAPM": ["Mkt_RF"],
     "Carhart4": ["Mkt_RF", "SMB", "HML", "MOM"],
     "FF5": ["Mkt_RF", "SMB", "HML", "RMW", "CMA"],
+    "FF5_LTRev": ["Mkt_RF", "SMB", "HML", "RMW", "CMA", "LT_Rev"],
 }
 
 
@@ -309,13 +311,32 @@ def fetch_momentum_factor(refresh: bool = False) -> pd.DataFrame:
     return df
 
 
+def fetch_lt_reversal_factor(refresh: bool = False) -> pd.DataFrame:
+    """下載並快取 Kenneth French long-term reversal 月因子。"""
+    cache_path = DATA_RAW_DIR / "lt_reversal_monthly.csv"
+    if cache_path.exists() and not refresh:
+        return read_cached_dataframe(cache_path, parse_dates=["Date"])
+
+    response = requests.get(LT_REV_URL, timeout=REQUEST_TIMEOUT)
+    response.raise_for_status()
+    df = parse_ken_french_monthly_zip(response.content, ["LT_Rev"])
+    save_dataframe(df, cache_path)
+    return df
+
+
 def fetch_factor_data(refresh: bool = False) -> pd.DataFrame:
-    """合併 FF5 與 Momentum 因子。"""
+    """合併 FF5、Momentum 與 long-term reversal 因子。"""
     ff5 = fetch_ff5_factors(refresh=refresh)
     mom = fetch_momentum_factor(refresh=refresh)
+    lt_rev = fetch_lt_reversal_factor(refresh=refresh)
 
     factors = ff5.merge(
         mom[["month", "MOM"]],
+        on="month",
+        how="inner",
+    )
+    factors = factors.merge(
+        lt_rev[["month", "LT_Rev"]],
         on="month",
         how="inner",
     )
@@ -491,7 +512,7 @@ def tidy_regression_output(model, asset_name: str, model_name: str) -> pd.DataFr
 
 def build_regression_summary(results_df: pd.DataFrame) -> pd.DataFrame:
     """把各模型的主要係數彙整到單列表格。"""
-    variables = ["const", "Mkt_RF", "SMB", "HML", "MOM", "RMW", "CMA"]
+    variables = ["const", "Mkt_RF", "SMB", "HML", "MOM", "RMW", "CMA", "LT_Rev"]
     summary_rows: list[dict[str, float | str | int]] = []
 
     for (asset, model_name), subset in results_df.groupby(["asset", "model"]):
@@ -641,7 +662,15 @@ def plot_factor_betas(summary_df: pd.DataFrame, target: str, path: Path) -> None
     if focus.empty:
         return
 
-    factor_columns = ["Mkt_RF_coef", "SMB_coef", "HML_coef", "MOM_coef", "RMW_coef", "CMA_coef"]
+    factor_columns = [
+        "Mkt_RF_coef",
+        "SMB_coef",
+        "HML_coef",
+        "MOM_coef",
+        "RMW_coef",
+        "CMA_coef",
+        "LT_Rev_coef",
+    ]
     plot_frame = focus[["model"] + factor_columns].fillna(0.0).set_index("model")
 
     ax = plot_frame.plot(kind="bar", figsize=(11, 6))
@@ -744,6 +773,25 @@ def build_observations(
                     f"顯示投組具有{direction} momentum 暴露。"
                 )
 
+    lt_rev_hits = regression_summary_df[
+        (regression_summary_df["model"] == "FF5_LTRev")
+        & (regression_summary_df["LT_Rev_p_value"] < 0.05)
+    ]
+    for _, row in lt_rev_hits.iterrows():
+        beta = row.get("LT_Rev_coef", np.nan)
+        if pd.isna(beta):
+            continue
+        if beta > 0:
+            observations.append(
+                f"{row['asset']} 在 FF5 + LT reversal 模型下的 LT_Rev 係數為 {beta:.3f}，"
+                "且達統計顯著，表示其報酬與 long-term reversal 因子呈正向關聯。"
+            )
+        else:
+            observations.append(
+                f"{row['asset']} 在 FF5 + LT reversal 模型下的 LT_Rev 係數為 {beta:.3f}，"
+                "且達統計顯著，表示其表現更像是長期贏家風格，而非長期落後股反轉。"
+            )
+
     return observations
 
 
@@ -772,7 +820,9 @@ def write_report(
         "MOM_coef",
         "RMW_coef",
         "CMA_coef",
+        "LT_Rev_coef",
         "r_squared",
+        "adj_r_squared",
     ]
 
     report_text = f"""# HW2: Investment Analysis and Portfolio Management
@@ -787,6 +837,7 @@ def write_report(
 - Risk factors: Kenneth French Data Library
   - Fama-French 5 Factors (monthly)
   - Momentum factor (monthly)
+  - Long-term reversal factor (monthly)
 
 ## 3. Workflow
 1. 下載並快取資產月資料與因子月資料。
@@ -794,7 +845,7 @@ def write_report(
 3. 以月份對齊所有資料，避免不同資產月底交易日不一致造成合併偏誤。
 4. 建立 `{ACTIVE_PORTFOLIO_NAME}` 等權重投資組合。
 5. 計算績效指標：年化報酬、年化波動、Sharpe ratio、Information ratio、最大回撤。
-6. 估計 CAPM、Carhart 4-factor 與 Fama-French 5-factor 模型。
+6. 估計 CAPM、Carhart 4-factor、Fama-French 5-factor 與 FF5 + LT reversal 模型。
 7. 根據統計結果進行風險暴露與 alpha 判讀。
 
 ## 4. Performance Summary
@@ -816,6 +867,7 @@ def write_report(
 - 如果某資產的 `Mkt_RF` 係數接近 1，代表它和整體市場風險暴露相近。
 - `SMB` 為正表示偏向小型股風格；`HML` 為正表示偏向價值股風格。
 - `MOM` 為正表示較偏向動能；`RMW` 為正表示偏向高獲利公司；`CMA` 為正表示偏向保守投資公司。
+- `LT_Rev` 為正表示和 long-term reversal 因子同向，通常較受長期落後股反轉影響；若為負，則較像長期贏家風格。
 - `const` 即 alpha。若 alpha 為正且顯著，表示在控制常見系統性風險後仍有超額報酬。
 - 若 alpha 不顯著，較合理的結論是：資產表現大致可以由既有因子暴露解釋，而非穩定選股能力。
 
