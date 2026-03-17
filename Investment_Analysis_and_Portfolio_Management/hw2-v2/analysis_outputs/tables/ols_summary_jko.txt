@@ -1,0 +1,30 @@
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:             excess_jko   R-squared:                       0.751
+Model:                            OLS   Adj. R-squared:                  0.722
+Method:                 Least Squares   F-statistic:                     25.61
+Date:                Wed, 18 Mar 2026   Prob (F-statistic):           8.59e-14
+Time:                        01:13:01   Log-Likelihood:                -158.48
+No. Observations:                  58   AIC:                             331.0
+Df Residuals:                      51   BIC:                             345.4
+Df Model:                           6                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.3038      0.603      0.503      0.617      -0.908       1.515
+MKT_RF         0.8817      0.169      5.228      0.000       0.543       1.220
+SMB            0.0823      0.238      0.346      0.730      -0.395       0.560
+HML_BM        -0.3700      0.184     -2.014      0.049      -0.739      -0.001
+EP            -0.7856      0.357     -2.197      0.033      -1.503      -0.068
+DY             0.0113      0.432      0.026      0.979      -0.856       0.879
+MOM            0.5941      0.232      2.556      0.014       0.128       1.061
+==============================================================================
+Omnibus:                        3.866   Durbin-Watson:                   1.775
+Prob(Omnibus):                  0.145   Jarque-Bera (JB):                3.002
+Skew:                           0.533   Prob(JB):                        0.223
+Kurtosis:                       3.323   Cond. No.                         7.72
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
