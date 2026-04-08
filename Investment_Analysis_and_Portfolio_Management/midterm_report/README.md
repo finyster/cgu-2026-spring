@@ -7,18 +7,18 @@ Last updated: `2026-04-08`
 - Common monthly return sample: `2020-08` to `2026-03`
 - Initial common TRI anchor month: `2020-07`
 - Carhart regression sample: `2021-04` to `2026-03`, `60` monthly observations per fund
-- Official factor file now in use: `data/TEJ_carhart_factor_monthly_2020-01_to_2026-03_utf8.csv`
+- Official factor file now in use: `data/tej_carhart_4factor_monthly_2020-01_to_2026-03.csv`
 - Main analysis script: `scripts/analyze_midterm.py`
 
 Source:
 
 - Fund monthly TRI source files:
-  - `data/國泰ESG/國泰台灣ESG永續高股息ETF基金2020-7-20~2026-3-31每月總報酬指數.xlsx`
-  - `data/統一奔騰基金/統一奔騰基金2020-3-31到2026-3-31每月總報酬指數.xlsx`
-  - `data/野村成長基金/野村成長基金-2020-03-31到2026-04-07每月總報酬指數.xlsx`
+  - `data/cathay_esg_00878/monthly_total_return_index_2020-07_to_2026-03.xlsx`
+  - `data/uni_penta/monthly_total_return_index_2020-03_to_2026-03.xlsx`
+  - `data/nomura_growth/monthly_total_return_index_2020-03_to_2026-03.xlsx`
 - Carhart factor source:
-  - original raw export: `data/20260407111212.csv`
-  - cleaned analysis file: `data/TEJ_carhart_factor_monthly_2020-01_to_2026-03_utf8.csv`
+  - current corrected raw export: `data/tej_carhart_4factor_raw_2026-04-08.csv`
+  - cleaned analysis file: `data/tej_carhart_4factor_monthly_2020-01_to_2026-03.csv`
 - Processing / analysis scripts:
   - `scripts/analyze_midterm.py`
   - `scripts/fetch_peer_rankings.py`
@@ -43,14 +43,14 @@ Regression window: `2021-04` to `2026-03`
 
 | Fund | Alpha Ann. | Alpha p-value | MKT-RF | SMB | HML | MOM | Adj. R² |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 國泰台灣 ESG 永續高股息 ETF (00878) | -2.57% | 0.52 | 0.62 | 0.07 | 0.19 | 0.17 | 0.63 |
-| 統一奔騰基金 | 10.23% | 0.22 | 1.14 | 0.50 | 0.06 | 0.37 | 0.60 |
-| 野村成長基金 | 8.77% | 0.26 | 1.30 | 0.46 | -0.28 | 0.18 | 0.71 |
+| 國泰台灣 ESG 永續高股息 ETF (00878) | -2.33% | 0.57 | 0.62 | 0.04 | 0.17 | 0.10 | 0.62 |
+| 統一奔騰基金 | 7.96% | 0.33 | 1.12 | 0.49 | 0.01 | 0.44 | 0.61 |
+| 野村成長基金 | 8.04% | 0.31 | 1.26 | 0.43 | -0.35 | 0.23 | 0.70 |
 
 Source:
 
 - Fund returns: monthly TRI workbooks under `data/`
-- Factor inputs: `data/TEJ_carhart_factor_monthly_2020-01_to_2026-03_utf8.csv`
+- Factor inputs: `data/tej_carhart_4factor_monthly_2020-01_to_2026-03.csv`
 - Regression output: `analysis_outputs/tables/carhart_summary.csv`
 - Full OLS summaries:
   - `analysis_outputs/tables/carhart_ols_summary_cathay_esg.txt`
@@ -70,9 +70,9 @@ Note: current holdings files are partial portfolios, so these figures are useful
 Source:
 
 - Holdings files:
-  - `data/國泰ESG/營收細項.xlsx`
-  - `data/統一奔騰基金/營收細項.xlsx`
-  - `data/野村成長基金/營收細項.xlsx`
+  - `data/cathay_esg_00878/holdings_breakdown.xlsx`
+  - `data/uni_penta/holdings_breakdown.xlsx`
+  - `data/nomura_growth/holdings_breakdown.xlsx`
 - Summary tables:
   - `analysis_outputs/tables/holdings_summary.csv`
   - `analysis_outputs/tables/holdings_overlap.csv`
@@ -83,8 +83,9 @@ Source:
 - `統一奔騰基金` currently has the strongest common-sample risk-adjusted profile in this dataset.
 - `野村成長基金` has the deepest drawdown, so its strong return came with the highest downside pain.
 - In the 5-year Carhart regression, both active funds show positive annualized alpha estimates, but neither alpha is statistically significant at conventional levels.
-- The active funds both load strongly on market risk and positively on `SMB`, which is more consistent with aggressive active style exposure than clean standalone alpha.
-- `野村成長基金` shows a negative `HML` loading, which is consistent with a stronger growth tilt than `統一奔騰基金`.
+- The active funds both load strongly on market risk and positively on `SMB`, which is still more consistent with aggressive active style exposure than clean standalone alpha.
+- `統一奔騰基金` now shows a clearly positive `MOM` loading, and that momentum exposure is statistically more meaningful than before.
+- `野村成長基金` still shows a negative `HML` loading, which is consistent with a stronger growth tilt than `統一奔騰基金`.
 - `統一奔騰基金` and `野村成長基金` share many technology-heavy holdings, so the active-vs-active comparison is more about concentration and implementation than about completely different style universes.
 
 Source:
@@ -151,6 +152,18 @@ Source:
 - `data_review.md`
 - `report_digest.md`
 
+## Requirement Check
+
+Requirement-by-requirement status:
+
+- `requirements_checklist.md`
+
+Current conclusion:
+
+- Requirements `1`, `2`, `3` are already usable for report writing.
+- Requirements `4`, `5` can only be written as simplified analysis with current holdings data.
+- Requirements `6`, `7` can now be written as preliminary conclusions if you are willing to disclose those data limitations.
+
 ## Useful Files
 
 - Detailed analysis report: [analysis_outputs/midterm_analysis_report.md](analysis_outputs/midterm_analysis_report.md)
@@ -161,10 +174,11 @@ Source:
 - Peer ranking summary: [analysis_outputs/tables/peer_ranking_summary.csv](analysis_outputs/tables/peer_ranking_summary.csv)
 - Data review notes: [data_review.md](data_review.md)
 - Next-step plan: [next_steps.md](next_steps.md)
+- Requirement checklist: [requirements_checklist.md](requirements_checklist.md)
 - PDF digest notes: [report_digest.md](report_digest.md)
 - Source registry: [source_registry.md](source_registry.md)
-- Assignment notes: [注意事項.md](注意事項.md)
-- Assignment details: [細節.md](細節.md)
+- Assignment notes: [assignment_notes.md](assignment_notes.md)
+- Assignment details: [assignment_details.md](assignment_details.md)
 
 ## Re-run
 

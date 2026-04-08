@@ -31,26 +31,26 @@ FUNDS = [
         fund_id="cathay_esg",
         fund_name="國泰台灣 ESG 永續高股息 ETF (00878)",
         fund_type="Passive ETF",
-        monthly_path=DATA_DIR / "國泰ESG" / "國泰台灣ESG永續高股息ETF基金2020-7-20~2026-3-31每月總報酬指數.xlsx",
-        holdings_path=DATA_DIR / "國泰ESG" / "營收細項.xlsx",
+        monthly_path=DATA_DIR / "cathay_esg_00878" / "monthly_total_return_index_2020-07_to_2026-03.xlsx",
+        holdings_path=DATA_DIR / "cathay_esg_00878" / "holdings_breakdown.xlsx",
     ),
     FundConfig(
         fund_id="uni_penta",
         fund_name="統一奔騰基金",
         fund_type="Active Fund",
-        monthly_path=DATA_DIR / "統一奔騰基金" / "統一奔騰基金2020-3-31到2026-3-31每月總報酬指數.xlsx",
-        holdings_path=DATA_DIR / "統一奔騰基金" / "營收細項.xlsx",
+        monthly_path=DATA_DIR / "uni_penta" / "monthly_total_return_index_2020-03_to_2026-03.xlsx",
+        holdings_path=DATA_DIR / "uni_penta" / "holdings_breakdown.xlsx",
     ),
     FundConfig(
         fund_id="nomura_growth",
         fund_name="野村成長基金",
         fund_type="Active Fund",
-        monthly_path=DATA_DIR / "野村成長基金" / "野村成長基金-2020-03-31到2026-04-07每月總報酬指數.xlsx",
-        holdings_path=DATA_DIR / "野村成長基金" / "營收細項.xlsx",
+        monthly_path=DATA_DIR / "nomura_growth" / "monthly_total_return_index_2020-03_to_2026-03.xlsx",
+        holdings_path=DATA_DIR / "nomura_growth" / "holdings_breakdown.xlsx",
     ),
 ]
 
-FACTOR_PATH = DATA_DIR / "TEJ_carhart_factor_monthly_2020-01_to_2026-03_utf8.csv"
+FACTOR_PATH = DATA_DIR / "tej_carhart_4factor_monthly_2020-01_to_2026-03.csv"
 
 COMMON_START_MONTH = "2020-08"
 COMMON_END_MONTH = "2026-03"
@@ -378,7 +378,7 @@ def build_report(
         "",
         "- Common performance sample: `2020-08` to `2026-03` monthly returns (initial TRI available from `2020-07`).",
         "- Carhart regression sample: `2021-04` to `2026-03`, total `60` monthly observations for each fund.",
-        "- Factor file used: `data/TEJ_carhart_factor_monthly_2020-01_to_2026-03_utf8.csv`.",
+        "- Factor file used: `data/tej_carhart_4factor_monthly_2020-01_to_2026-03.csv`.",
         "",
         "## Common-Sample Performance",
         "",

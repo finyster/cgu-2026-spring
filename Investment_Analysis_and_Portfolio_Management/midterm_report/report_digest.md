@@ -1,6 +1,6 @@
 # Report Digest
 
-這份檔案把 3 份 `report.PDF` 的重要資訊改寫成較好閱讀的 Markdown 摘要，供後續報告撰寫直接引用。
+這份檔案把 3 份 `fund_report.pdf` 的重要資訊改寫成較好閱讀的 Markdown 摘要，供後續報告撰寫直接引用。
 
 ## 國泰台灣 ESG 永續高股息 ETF 基金
 
@@ -101,7 +101,7 @@
 | 年化追蹤誤差（週資料） | 18.70 |
 | 夏普比率（週資料） | 5.02 |
 
-### Holdings Snapshot From `營收細項.xlsx`
+### Holdings Snapshot From `holdings_breakdown.xlsx`
 
 | 指標 | 數值 |
 | --- | ---: |
@@ -171,7 +171,7 @@
 | R 平方（週資料） | 未提供 |
 | 年化追蹤誤差（週資料） | 未提供 |
 
-### Holdings Snapshot From `營收細項.xlsx`
+### Holdings Snapshot From `holdings_breakdown.xlsx`
 
 | 指標 | 數值 |
 | --- | ---: |

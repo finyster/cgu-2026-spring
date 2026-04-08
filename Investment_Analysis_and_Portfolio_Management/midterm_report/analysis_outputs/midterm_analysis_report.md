@@ -4,7 +4,7 @@
 
 - Common performance sample: `2020-08` to `2026-03` monthly returns (initial TRI available from `2020-07`).
 - Carhart regression sample: `2021-04` to `2026-03`, total `60` monthly observations for each fund.
-- Factor file used: `data/TEJ_carhart_factor_monthly_2020-01_to_2026-03_utf8.csv`.
+- Factor file used: `data/tej_carhart_4factor_monthly_2020-01_to_2026-03.csv`.
 
 ## Common-Sample Performance
 
@@ -34,9 +34,9 @@
 
 | fund_name | n_obs | alpha_annualized_pct | alpha_p_value | mkt_beta | smb_beta | hml_beta | mom_beta | adj_r_squared |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 國泰台灣 ESG 永續高股息 ETF (00878) | 60 | -2.57 | 0.52 | 0.62 | 0.07 | 0.19 | 0.17 | 0.63 |
-| 統一奔騰基金 | 60 | 10.23 | 0.22 | 1.14 | 0.50 | 0.06 | 0.37 | 0.60 |
-| 野村成長基金 | 60 | 8.77 | 0.26 | 1.30 | 0.46 | -0.28 | 0.18 | 0.71 |
+| 國泰台灣 ESG 永續高股息 ETF (00878) | 60 | -2.33 | 0.57 | 0.62 | 0.04 | 0.17 | 0.10 | 0.62 |
+| 統一奔騰基金 | 60 | 7.96 | 0.33 | 1.12 | 0.49 | 0.01 | 0.44 | 0.61 |
+| 野村成長基金 | 60 | 8.04 | 0.31 | 1.26 | 0.43 | -0.35 | 0.23 | 0.70 |
 
 ## Holdings Structure
 

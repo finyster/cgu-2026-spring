@@ -6,7 +6,7 @@
 - 3 檔基金可共同比較的月資料筆數：`69` 個月
 - Carhart 5 年回歸建議期間：`2021-04` 到 `2026-03`
 - Carhart 5 年回歸可用月數：`60` 個月
-- 因子檔正式使用版本：`data/TEJ_carhart_factor_monthly_2020-01_to_2026-03_utf8.csv`
+- 因子檔正式使用版本：`data/tej_carhart_4factor_monthly_2020-01_to_2026-03.csv`
 
 ## 建議工作順序
 

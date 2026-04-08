@@ -1,27 +1,27 @@
                             OLS Regression Results                            
 ==============================================================================
-Dep. Variable:      excess_return_pct   R-squared:                       0.726
-Model:                            OLS   Adj. R-squared:                  0.707
-Method:                 Least Squares   F-statistic:                     36.51
-Date:                Tue, 07 Apr 2026   Prob (F-statistic):           6.94e-15
-Time:                        23:56:54   Log-Likelihood:                -171.22
-No. Observations:                  60   AIC:                             352.4
-Df Residuals:                      55   BIC:                             362.9
+Dep. Variable:      excess_return_pct   R-squared:                       0.722
+Model:                            OLS   Adj. R-squared:                  0.702
+Method:                 Least Squares   F-statistic:                     35.70
+Date:                Wed, 08 Apr 2026   Prob (F-statistic):           1.08e-14
+Time:                        09:50:25   Log-Likelihood:                -171.71
+No. Observations:                  60   AIC:                             353.4
+Df Residuals:                      55   BIC:                             363.9
 Df Model:                           4                                         
 Covariance Type:            nonrobust                                         
 ==============================================================================
                  coef    std err          t      P>|t|      [0.025      0.975]
 ------------------------------------------------------------------------------
-const          0.7027      0.619      1.135      0.261      -0.538       1.943
-mkt_rf         1.2969      0.136      9.568      0.000       1.025       1.568
-smb            0.4603      0.192      2.401      0.020       0.076       0.844
-hml           -0.2771      0.179     -1.549      0.127      -0.636       0.081
-mom            0.1787      0.186      0.959      0.342      -0.195       0.552
+const          0.6462      0.631      1.023      0.311      -0.619       1.912
+mkt_rf         1.2632      0.137      9.216      0.000       0.989       1.538
+smb            0.4285      0.196      2.191      0.033       0.037       0.820
+hml           -0.3524      0.192     -1.835      0.072      -0.737       0.033
+mom            0.2330      0.179      1.299      0.199      -0.126       0.592
 ==============================================================================
-Omnibus:                        1.610   Durbin-Watson:                   1.447
-Prob(Omnibus):                  0.447   Jarque-Bera (JB):                1.608
-Skew:                           0.360   Prob(JB):                        0.447
-Kurtosis:                       2.647   Cond. No.                         6.73
+Omnibus:                        1.609   Durbin-Watson:                   1.474
+Prob(Omnibus):                  0.447   Jarque-Bera (JB):                1.457
+Skew:                           0.373   Prob(JB):                        0.483
+Kurtosis:                       2.836   Cond. No.                         6.77
 ==============================================================================
 
 Notes:

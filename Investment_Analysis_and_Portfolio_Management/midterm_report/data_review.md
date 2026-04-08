@@ -6,10 +6,10 @@
 
 | 分析項目 | 狀態 | 說明 |
 | --- | --- | --- |
-| 基金基本資訊 | 可直接進行 | 3 份 `report.PDF` 已涵蓋基金公司、經理人、費用、成立日、規模、基準等欄位。 |
+| 基金基本資訊 | 可直接進行 | 3 份 `fund_report.pdf` 已涵蓋基金公司、經理人、費用、成立日、規模、基準等欄位。 |
 | 歷史績效分析 | 可直接進行 | 3 檔基金都有日頻與月頻總報酬指數資料。 |
 | 報酬波動與簡單風險指標 | 可直接進行 | 可由日/月總報酬指數自行計算。 |
-| Carhart 四因子分析 | 可直接進行 | 以 `TEJ_carhart_factor_monthly_2020-01_to_2026-03_utf8.csv` 為準，月資料自 `202001` 至 `202603` 連續完整，共 `75` 個月份。 |
+| Carhart 四因子分析 | 可直接進行 | 以 `tej_carhart_4factor_monthly_2020-01_to_2026-03.csv` 為準，月資料自 `202001` 至 `202603` 連續完整，共 `75` 個月份。 |
 | 績效歸因分析 | 僅能近似進行 | 目前只有單期持股權重與營收貢獻，缺少完整基準權重與產業資料。 |
 | Active Share Analysis | 僅能近似進行 | 持股檔並非完整投組，且缺少基準成分股權重。 |
 | 同類型基金排名 | 尚未就緒 | 目前資料夾內沒有同類排名或百分位資料。 |
@@ -18,7 +18,7 @@
 
 ### High
 
-1. 3 份 `營收細項.xlsx` 不是完整投組。  
+1. 3 份 `holdings_breakdown.xlsx` 不是完整投組。  
    目前可見權重加總如下：
    - 國泰 ESG：`46.62%`
    - 統一奔騰基金：`89.29%`
@@ -29,9 +29,9 @@
 ### Medium
 
 2. 舊的 Carhart 檔不應再使用。  
-   舊的 `TEJ_carhart_factor.xlsx` 只有 `41` 筆資料列，且月份不連續；新的原始檔 `20260407111212.csv` 則是完整月頻資料。  
+   舊的 `TEJ_carhart_factor.xlsx` 只有 `41` 筆資料列，且月份不連續；目前正式使用的原始檔已更新為 `tej_carhart_4factor_raw_2026-04-08.csv`。  
    目前已整理出標準化版本：
-   - `data/TEJ_carhart_factor_monthly_2020-01_to_2026-03_utf8.csv`
+   - `data/tej_carhart_4factor_monthly_2020-01_to_2026-03.csv`
    
    後續回歸分析應一律使用這份 cleaned CSV。
 
@@ -82,12 +82,13 @@ Carhart 因子檔現況：
 
 | 檔案 | 期間 | 月數 | 狀態 |
 | --- | --- | ---: | --- |
-| `20260407111212.csv` | 202001-202603 | 75 | 原始 UTF-16 / tab-delimited 檔 |
-| `TEJ_carhart_factor_monthly_2020-01_to_2026-03_utf8.csv` | 202001-202603 | 75 | 建議正式分析使用 |
+| `tej_carhart_4factor_raw_2026-04-08.csv` | 202001-202603 | 75 | 目前正式使用的原始因子檔 |
+| `tej_carhart_4factor_raw_2026-04-07_legacy.csv` | 202001-202603 | 75 | 舊版原始檔，已被新檔取代 |
+| `tej_carhart_4factor_monthly_2020-01_to_2026-03.csv` | 202001-202603 | 75 | 建議正式分析使用 |
 
 ## Recommended Cleanup
 
-1. 後續一律使用 `TEJ_carhart_factor_monthly_2020-01_to_2026-03_utf8.csv`，不要再使用舊的 `TEJ_carhart_factor.xlsx`。
+1. 後續一律使用 `tej_carhart_4factor_monthly_2020-01_to_2026-03.csv`，不要再使用舊的 `TEJ_carhart_factor.xlsx`。
 2. 補抓同類型基金排名與百分位資料。
 3. 若要做正式版 Attribution / Active Share，補抓同季完整持股明細與基準成分股權重。
 4. 後續正式比較三檔基金時，先統一共同樣本期間，再開始計算績效與回歸。

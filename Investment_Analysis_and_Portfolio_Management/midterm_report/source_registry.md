@@ -6,9 +6,9 @@ This file records the source basis for each current result block in the midterm 
 
 Primary source files:
 
-- `data/國泰ESG/國泰台灣ESG永續高股息ETF基金2020-7-20~2026-3-31每月總報酬指數.xlsx`
-- `data/統一奔騰基金/統一奔騰基金2020-3-31到2026-3-31每月總報酬指數.xlsx`
-- `data/野村成長基金/野村成長基金-2020-03-31到2026-04-07每月總報酬指數.xlsx`
+- `data/cathay_esg_00878/monthly_total_return_index_2020-07_to_2026-03.xlsx`
+- `data/uni_penta/monthly_total_return_index_2020-03_to_2026-03.xlsx`
+- `data/nomura_growth/monthly_total_return_index_2020-03_to_2026-03.xlsx`
 
 Derived output:
 
@@ -22,8 +22,12 @@ Processing logic:
 
 Primary factor sources:
 
-- Raw TEJ export: `data/20260407111212.csv`
-- Cleaned UTF-8 factor file used in analysis: `data/TEJ_carhart_factor_monthly_2020-01_to_2026-03_utf8.csv`
+- Current corrected raw TEJ export: `data/tej_carhart_4factor_raw_2026-04-08.csv`
+- Cleaned factor file used in analysis: `data/tej_carhart_4factor_monthly_2020-01_to_2026-03.csv`
+
+Superseded raw file:
+
+- `data/tej_carhart_4factor_raw_2026-04-07_legacy.csv`
 
 Fund return sources:
 
@@ -44,14 +48,15 @@ Processing logic:
 Important note:
 
 - The TEJ `無風險利率` field is treated as annualized and converted to monthly rate by dividing by `12` before computing excess return.
+- The cleaned factor file was rebuilt on `2026-04-08` from `tej_carhart_4factor_raw_2026-04-08.csv`.
 
 ## 3. Holdings Structure
 
 Primary source files:
 
-- `data/國泰ESG/營收細項.xlsx`
-- `data/統一奔騰基金/營收細項.xlsx`
-- `data/野村成長基金/營收細項.xlsx`
+- `data/cathay_esg_00878/holdings_breakdown.xlsx`
+- `data/uni_penta/holdings_breakdown.xlsx`
+- `data/nomura_growth/holdings_breakdown.xlsx`
 
 Derived outputs:
 
@@ -70,9 +75,9 @@ Important limitation:
 
 Primary source files:
 
-- `data/國泰ESG/國泰台灣ESG永續高股息ETF基金report.PDF`
-- `data/統一奔騰基金/統一奔騰基金report.PDF`
-- `data/野村成長基金/野村成長基金report.PDF`
+- `data/cathay_esg_00878/fund_report.pdf`
+- `data/uni_penta/fund_report.pdf`
+- `data/nomura_growth/fund_report.pdf`
 
 Supporting digest:
 
