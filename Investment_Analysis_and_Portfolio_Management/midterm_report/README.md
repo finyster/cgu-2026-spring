@@ -77,6 +77,22 @@ Source:
   - `analysis_outputs/tables/holdings_summary.csv`
   - `analysis_outputs/tables/holdings_overlap.csv`
 
+## Fee Snapshot
+
+| Fund | Expense Ratio | Management Fee | Subscription Fee | Redemption Fee |
+| --- | ---: | ---: | ---: | ---: |
+| 國泰台灣 ESG 永續高股息 ETF (00878) | 0.35% | 0.30% | 2.00% | 0.40% |
+| 統一奔騰基金 | 1.75% | 1.60% | 2.00% | 0.00% |
+| 野村成長基金 | 1.74% | 1.60% | 2.00% | 1.00% |
+
+Source:
+
+- `report_digest.md`
+- Original fund summaries:
+  - `data/cathay_esg_00878/fund_report.pdf`
+  - `data/uni_penta/fund_report.pdf`
+  - `data/nomura_growth/fund_report.pdf`
+
 ## Current Read
 
 - Two active funds clearly outperformed the passive ETF in raw return over the common sample, but they also took materially higher volatility and deeper drawdowns.
