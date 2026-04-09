@@ -83,7 +83,6 @@ Carhart 因子檔現況：
 | 檔案 | 期間 | 月數 | 狀態 |
 | --- | --- | ---: | --- |
 | `tej_carhart_4factor_raw_2026-04-08.csv` | 202001-202603 | 75 | 目前正式使用的原始因子檔 |
-| `tej_carhart_4factor_raw_2026-04-07_legacy.csv` | 202001-202603 | 75 | 舊版原始檔，已被新檔取代 |
 | `tej_carhart_4factor_monthly_2020-01_to_2026-03.csv` | 202001-202603 | 75 | 建議正式分析使用 |
 
 ## Recommended Cleanup

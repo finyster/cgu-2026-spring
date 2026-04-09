@@ -25,10 +25,6 @@ Primary factor sources:
 - Current corrected raw TEJ export: `data/tej_carhart_4factor_raw_2026-04-08.csv`
 - Cleaned factor file used in analysis: `data/tej_carhart_4factor_monthly_2020-01_to_2026-03.csv`
 
-Superseded raw file:
-
-- `data/tej_carhart_4factor_raw_2026-04-07_legacy.csv`
-
 Fund return sources:
 
 - Same three monthly TRI workbooks listed in section 1
